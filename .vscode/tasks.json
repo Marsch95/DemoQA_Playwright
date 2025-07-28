@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Playwright Tests",
+      "type": "shell",
+      "command": "npx playwright test",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Playwright UI",
+      "type": "shell",
+      "command": "npx playwright test --ui",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}
