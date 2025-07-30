@@ -17,6 +17,7 @@ export class LinksPage {
   readonly notFoundLink: Locator;
   readonly linkResponse: Locator;
 
+  
   constructor(page: Page) {
     this.page = page;
     // Locators for Home and Dynamic Home links (disambiguate if multiple found)
