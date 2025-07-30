@@ -309,9 +309,18 @@ test.describe('Dynamic Properties', () => {
 
     // Check color change of the 'Color Change' button
     const initialColor = await dynamicPage.getColorChangeButtonColor();
-    await dynamicPage.page.waitForTimeout(6000); // Wait for color to change
-    const changedColor = await dynamicPage.getColorChangeButtonColor();
-    expect(initialColor).not.toBe(changedColor);
+    // Wait up to 10s for the color to change (robust for CI)
+    const colorChangeSelector = '#colorChange'; // Use the actual selector
+    const changedColor = await dynamicPage.page.waitForFunction(
+      ({ selector, initial }: { selector: string; initial: string }) => {
+        const el = document.querySelector(selector);
+        if (!el) return initial;
+        return getComputedStyle(el as HTMLElement).color !== initial ? getComputedStyle(el as HTMLElement).color : initial;
+      },
+      { selector: colorChangeSelector, initial: initialColor },
+      { timeout: 10000 }
+    );
+    expect(await changedColor).not.toBe(initialColor);
 
     // Wait for the 'Visible After 5 Seconds' button to appear
     await dynamicPage.waitForVisibleAfter();
