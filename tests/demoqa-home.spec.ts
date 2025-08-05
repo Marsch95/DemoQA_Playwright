@@ -8,6 +8,7 @@ import { LinksPage } from '../pages/LinksPage';
 import { BrokenPage } from '../pages/BrokenPage';
 import { UploadDownloadPage } from '../pages/UploadDownloadPage';
 import { DynamicPropertiesPage } from '../pages/DynamicPropertiesPage';
+import fs from 'fs';
 
 // Elements: Text Box
 let textBoxPage: TextBoxPage;
@@ -277,7 +278,7 @@ test.describe('Upload and Download', () => {
     // Prepare a file to upload (use a sample file from the test project)
     const filePath = testInfo.project.testDir + '/sample-upload.txt';
     // Create the file if it doesn't exist
-    const fs = require('fs');
+    //const fs = require('fs');
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, 'DemoQA upload test file');
     }
@@ -320,7 +321,7 @@ test.describe('Dynamic Properties', () => {
       { selector: colorChangeSelector, initial: initialColor },
       { timeout: 10000 }
     );
-    expect(await changedColor).not.toBe(initialColor);
+    expect(changedColor).not.toBe(initialColor);
 
     // Wait for the 'Visible After 5 Seconds' button to appear
     await dynamicPage.waitForVisibleAfter();
