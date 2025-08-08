@@ -15,6 +15,16 @@ jobs:
           node-version: lts/*
       - name: Install dependencies
         run: npm ci
+      - name: Run ESLint
+        run: npx eslint . --format html --output-file eslint-report.html
+        continue-on-error: true
+      - name: Upload ESLint report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: eslint-report
+          path: eslint-report.html
+          retention-days: 30
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
