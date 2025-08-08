@@ -1,23 +1,44 @@
 // ESLint v9+ flat config for TypeScript and Playwright
-const js = require('@eslint/js');
-const tseslint = require('typescript-eslint');
+import js from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
-module.exports = [
+export default [
+  {
+    ignores: ['playwright-report/**'],
+  },
   js.configs.recommended,
-  ...tseslint.configs.recommended,
   {
     files: ['**/*.ts'],
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tsParser,
       parserOptions: {
-        // Remove project reference for compatibility
-        // project: './tsconfig.json',
+        ecmaVersion: 'latest',
+        sourceType: 'module',
       },
+      globals: {
+        process: 'readonly',
+        __dirname: 'readonly',
+        document: 'readonly',
+        localStorage: 'readonly',
+        HTMLElement: 'readonly',
+        getComputedStyle: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
     },
     rules: {
       'no-unused-vars': 'warn',
       'no-console': 'off',
-      // Add Playwright best practices or custom rules here
+      // Playwright best practice: disallow test.only
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "CallExpression[callee.object.name='test'][callee.property.name='only']",
+          message: 'Do not commit test.only. Remove before pushing.',
+        },
+      ],
     },
   },
 ];
