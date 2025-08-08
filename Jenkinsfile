@@ -25,6 +25,14 @@ pipeline {
                 sh 'npx playwright install'
             }
         }
+
+        stage('Lint Code') {
+            steps {
+                // Run ESLint on the project and store results in HTML file
+                sh 'npx eslint . -f html -o eslint-report.html || true'
+            }
+        }
+
         stage('Run Playwright Tests') {
             steps {
                 // Run Playwright tests
@@ -33,8 +41,9 @@ pipeline {
         }
         stage('Archive Test Report') {
             steps {
-                // Archive Playwright HTML report
-                archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+                // Archive Playwright HTML report and ESLint report
+                archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'eslint-report.html', allowEmptyArchive: true
             }
         }
     }
