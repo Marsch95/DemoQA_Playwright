@@ -25,6 +25,12 @@ pipeline {
                 sh 'npx playwright install'
             }
         }
+        stage('Install Playwright Dependencies') {
+            steps {
+                // Install required system dependencies for Playwright browsers
+                sh 'npx playwright install-deps'
+            }
+        }
 
         stage('Lint Code') {
             steps {
