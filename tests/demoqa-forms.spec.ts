@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import { FormsPage } from '../pages/FormsPage';
 import * as path from 'path';
 
+// Use process.cwd() for compatibility with CommonJS and ES modules
+const picturePath = path.join(process.cwd(), 'tests', 'sample-upload.txt');
+
 // Test to fill and submit the DemoQA Practice Form using POM
 
 test('Submit Practice Form at DemoQA', async ({ page }) => {
@@ -18,7 +21,7 @@ test('Submit Practice Form at DemoQA', async ({ page }) => {
     dob: '01 Jan 2000',
     subjects: ['Maths', 'English'],
     hobbies: ['Reading', 'Music'],
-    picturePath: path.resolve(__dirname, 'sample-upload.txt'),
+    picturePath,
     address: '123 Main St, Test City',
     state: 'NCR',
     city: 'Delhi',
